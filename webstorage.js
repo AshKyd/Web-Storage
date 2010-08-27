@@ -107,18 +107,20 @@ var webStorage = {};
 		// specified the parameter in minutes.
 		expiration = expiration * 60;
 		
-		if(hasStorage && hasJson) {
+		if(hasStorage) {
 			// Retrieve our item from DOM storage
 			var _storedItem = storage.getItem(key);
 			if(_storedItem === null)
 				return false;
 			
 			// Parse our encapsulated data+metadata object.
-			try{
-				var _storedItem = JSON.parse(_storedItem);
-			} catch(e) {
-				notice(_storedItem);
-				throw 'Stored object could not be parsed. Was this saved with webStorage?';
+			if(hasJson) {
+				try{
+					var _storedItem = JSON.parse(_storedItem);
+				} catch(e) {
+					notice(_storedItem);
+					throw 'Stored object could not be parsed. Was this saved with webStorage?';
+				}
 			}
 		} else {
 			// Retrieve our item from our temporal cache.
